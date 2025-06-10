@@ -2,6 +2,7 @@ import React, { PropsWithChildren } from "react";
 import {
   ListenerFn,
   Outlet,
+  RouteComponent,
   RouterEvents,
   RouterProvider,
   createMemoryHistory,
@@ -9,9 +10,9 @@ import {
   createRoute,
   createRouter,
 } from "@tanstack/react-router";
-import { render } from "@testing-library/react";
+import { render, RenderResult } from "@testing-library/react";
 
-function createTestRouter(component: (...args: any) => React.ReactNode, currentUrl: string) {
+function createTestRouter(component: RouteComponent, currentUrl: string) {
   const rootRoute = createRootRoute({
     component: Outlet,
   });
@@ -31,10 +32,15 @@ function createTestRouter(component: (...args: any) => React.ReactNode, currentU
 }
 
 type RenderWithRouterParams = {
-  component: (...args: any) => React.ReactNode;
+  component: React.FC;
   Wrapper?: React.ComponentType<PropsWithChildren>;
   onNavigate?: ListenerFn<RouterEvents['onBeforeNavigate']>;
   currentUrl?: string;
+};
+
+type RenderWithRouterResult = {
+  router: ReturnType<typeof createTestRouter>;
+  renderResult: RenderResult;
 };
 
 export function renderWithRouter({
@@ -42,12 +48,11 @@ export function renderWithRouter({
   Wrapper = React.Fragment,
   onNavigate = () => {},
   currentUrl = "/"
-}: RenderWithRouterParams) {
+}: RenderWithRouterParams): RenderWithRouterResult {
   const router = createTestRouter(component, currentUrl);
   router.subscribe('onBeforeNavigate', onNavigate);
   const renderResult = render(
     <Wrapper>
-      {/* @ts-expect-error */}
       <RouterProvider router={router} />;
     </Wrapper>,
   );
