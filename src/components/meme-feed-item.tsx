@@ -33,10 +33,11 @@ export const MemeFeedItem = ({ meme, connectedUser, author }: MemeFeedItemProps)
   }, [createdComment, addComment]);
 
   const handleCreateComment = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
     if (!commentContent) {
       return;
     }
-    event.preventDefault();
     createComment({
       memeId: meme.id,
       content: commentContent,
