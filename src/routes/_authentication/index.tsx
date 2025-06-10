@@ -23,7 +23,7 @@ import { useCreateMeme } from "../../hooks/useCreateMeme";
 import { useUser } from "../../hooks/useUser";
 
 export const MemeFeedPage: React.FC = () => {
-  const { isLoading, memes } = useMemes();
+  const { isLoading, memes, fetchNextPage, hasNextPage } = useMemes();
   const { user } = useUser();
   const [openedCommentSection, setOpenedCommentSection] = useState<
     string | null
@@ -32,11 +32,19 @@ export const MemeFeedPage: React.FC = () => {
     [key: string]: string;
   }>({});
   const { mutate } = useCreateMeme();
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+    if (scrollHeight - scrollTop - clientHeight < 50 && hasNextPage) {
+      fetchNextPage();
+    }
+  };
+
   if (isLoading) {
     return <Loader data-testid="meme-feed-loader" />;
   }
   return (
-    <Flex width="full" height="full" justifyContent="center" overflowY="auto">
+    <Flex width="full" height="full" justifyContent="center" overflowY="auto" onScroll={handleScroll}>
       <VStack
         p={4}
         width="full"
@@ -175,6 +183,11 @@ export const MemeFeedPage: React.FC = () => {
             </VStack>
           );
         })}
+        {hasNextPage && (
+          <Box py={4} width="full" textAlign="center">
+            <Loader data-testid="meme-feed-loader-next-page" />
+          </Box>
+        )}
       </VStack>
     </Flex>
   );
