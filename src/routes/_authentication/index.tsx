@@ -21,6 +21,7 @@ import { MemePicture } from "../../components/meme-picture";
 import { useMemes } from "../../hooks/useMemes";
 import { useCreateMeme } from "../../hooks/useCreateMeme";
 import { useUser } from "../../hooks/useUser";
+import { useMemeComments } from "../../hooks/useMemeComments";
 
 export const MemeFeedPage: React.FC = () => {
   const { isLoading, memes, fetchNextPage, hasNextPage } = useMemes();
@@ -28,6 +29,8 @@ export const MemeFeedPage: React.FC = () => {
   const [openedCommentSection, setOpenedCommentSection] = useState<
     string | null
   >(null);
+  const { comments, isLoading: isLoadingComments } = useMemeComments(openedCommentSection);
+
   const [commentContent, setCommentContent] = useState<{
     [key: string]: string;
   }>({});
@@ -43,6 +46,7 @@ export const MemeFeedPage: React.FC = () => {
   if (isLoading) {
     return <Loader data-testid="meme-feed-loader" />;
   }
+
   return (
     <Flex width="full" height="full" justifyContent="center" overflowY="auto" onScroll={handleScroll}>
       <VStack
@@ -146,23 +150,24 @@ export const MemeFeedPage: React.FC = () => {
                   </form>
                 </Box>
                 <VStack align="stretch" spacing={4}>
-                  {/* {meme.comments.map((comment) => (
+                  {isLoadingComments && <Loader data-testid="meme-comments-loader" />}
+                  {comments.map((comment) => (
                     <Flex key={comment.id}>
-                      <Avatar
+                      {/* <Avatar
                         borderWidth="1px"
                         borderColor="gray.300"
                         size="sm"
                         name={comment.author.username}
                         src={comment.author.pictureUrl}
                         mr={2}
-                      />
+                      /> */}
                       <Box p={2} borderRadius={8} bg="gray.50" flexGrow={1}>
                         <Flex
                           justifyContent="space-between"
                           alignItems="center"
                         >
                           <Flex>
-                            <Text data-testid={`meme-comment-author-${meme.id}-${comment.id}`}>{comment.author.username}</Text>
+                            {/* <Text data-testid={`meme-comment-author-${meme.id}-${comment.id}`}>{comment.author.username}</Text> */}
                           </Flex>
                           <Text
                             fontStyle="italic"
@@ -177,7 +182,7 @@ export const MemeFeedPage: React.FC = () => {
                         </Text>
                       </Box>
                     </Flex>
-                  ))} */}
+                  ))}
                 </VStack>
               </Collapse>
             </VStack>
