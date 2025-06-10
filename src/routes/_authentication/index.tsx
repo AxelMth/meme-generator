@@ -48,14 +48,14 @@ export const MemeFeedPage: React.FC = () => {
             <VStack key={meme.id} p={4} width="full" align="stretch">
               <Flex justifyContent="space-between" alignItems="center">
                 <Flex>
-                  <Avatar
+                  {/* <Avatar
                     borderWidth="1px"
                     borderColor="gray.300"
                     size="xs"
                     name={meme.author.username}
                     src={meme.author.pictureUrl}
                   />
-                  <Text ml={2} data-testid={`meme-author-${meme.id}`}>{meme.author.username}</Text>
+                  <Text ml={2} data-testid={`meme-author-${meme.id}`}>{meme.author.username}</Text> */}
                 </Flex>
                 <Text fontStyle="italic" color="gray.500" fontSize="small">
                   {format(meme.createdAt)}
@@ -138,7 +138,7 @@ export const MemeFeedPage: React.FC = () => {
                   </form>
                 </Box>
                 <VStack align="stretch" spacing={4}>
-                  {meme.comments.map((comment) => (
+                  {/* {meme.comments.map((comment) => (
                     <Flex key={comment.id}>
                       <Avatar
                         borderWidth="1px"
@@ -169,7 +169,7 @@ export const MemeFeedPage: React.FC = () => {
                         </Text>
                       </Box>
                     </Flex>
-                  ))}
+                  ))} */}
                 </VStack>
               </Collapse>
             </VStack>
