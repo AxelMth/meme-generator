@@ -11,6 +11,7 @@ import {
   Text,
   Input,
   VStack,
+  Button,
 } from "@chakra-ui/react";
 import { CaretDown, CaretUp, Chat } from "@phosphor-icons/react";
 import { format } from "timeago.js";
@@ -30,7 +31,7 @@ export const MemeFeedPage: React.FC = () => {
   const [openedCommentSection, setOpenedCommentSection] = useState<
     string | null
   >(null);
-  const { comments, isLoading: isLoadingComments } = useMemeComments(openedCommentSection);
+  const { comments, isLoading: isLoadingComments, fetchNextComments, hasNextComments } = useMemeComments(openedCommentSection);
 
   const [commentContent, setCommentContent] = useState<{
     [key: string]: string;
@@ -121,6 +122,11 @@ export const MemeFeedPage: React.FC = () => {
                   {comments.map((comment) => (
                     <Comment key={comment.id} comment={comment} memeId={meme.id} />
                   ))}
+                  {hasNextComments && !isLoadingComments && (
+                    <Box py={4} width="full" textAlign="center">
+                      <Button onClick={fetchNextComments}>Load more comments</Button>
+                    </Box>
+                  )}
                 </VStack>
                 <Box mt={6}>
                   <form
