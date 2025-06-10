@@ -11,6 +11,7 @@ export const useUsersByIds = (
     queryFn: async () => {
       return await getUsersByIds(token, ids);
     },
+    enabled: ids.length > 0,
   });
   return { users: data, isLoading, error };
 };

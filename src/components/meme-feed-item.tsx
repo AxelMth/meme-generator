@@ -1,7 +1,7 @@
 import { Avatar, Box, Collapse, Flex, Icon, LinkBox, LinkOverlay, Text, Input, VStack, Button } from '@chakra-ui/react';
 import { CaretDown, CaretUp, Chat } from '@phosphor-icons/react';
 import { format } from 'timeago.js';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Loader } from './loader';
 import { Comment } from './comment';
@@ -12,31 +12,45 @@ import { useMemeComments } from '../hooks/useMemeComments';
 
 import { GetMemesResponse, GetUserByIdResponse } from '../api';
 
-export const MemeFeedItem = ({ meme, user }: MemeFeedItemProps) => {
+export const MemeFeedItem = ({ meme, connectedUser, author }: MemeFeedItemProps) => {
   const [openedCommentSection, setOpenedCommentSection] = useState<string | null>(null);
   const {
     comments,
     isLoading: isLoadingComments,
     fetchNextComments,
     hasNextComments,
+    addComment,
   } = useMemeComments(openedCommentSection);
 
-  const [commentContent, setCommentContent] = useState<{
-    [key: string]: string;
-  }>({});
-  const { createComment } = useCreateMeme();
+  const [commentContent, setCommentContent] = useState('');
+  const { createComment, createdComment } = useCreateMeme();
+
+  useEffect(() => {
+    if (createdComment) {
+      addComment(createdComment);
+      setCommentContent('');
+    }
+  }, [createdComment, addComment]);
+
+  const handleCreateComment = (event: React.FormEvent<HTMLFormElement>) => {
+    if (!commentContent) {
+      return;
+    }
+    event.preventDefault();
+    createComment({
+      memeId: meme.id,
+      content: commentContent,
+    });
+  };
+
   return (
     <VStack key={meme.id} p={4} width="full" align="stretch">
       <Flex justifyContent="space-between" alignItems="center">
         <Flex>
-          {/* <Avatar
-                    borderWidth="1px"
-                    borderColor="gray.300"
-                    size="xs"
-                    name={meme.author.username}
-                    src={meme.author.pictureUrl}
-                  />
-                  <Text ml={2} data-testid={`meme-author-${meme.id}`}>{meme.author.username}</Text> */}
+          <Avatar borderWidth="1px" borderColor="gray.300" size="xs" name={author?.username} src={author?.pictureUrl} />
+          <Text ml={2} data-testid={`meme-author-${meme.id}`}>
+            {author?.username}
+          </Text>
         </Flex>
         <Text fontStyle="italic" color="gray.500" fontSize="small">
           {format(meme.createdAt)}
@@ -81,35 +95,22 @@ export const MemeFeedItem = ({ meme, user }: MemeFeedItemProps) => {
           )}
         </VStack>
         <Box mt={6}>
-          <form
-            onSubmit={(event) => {
-              event.preventDefault();
-              if (commentContent[meme.id]) {
-                createComment({
-                  memeId: meme.id,
-                  content: commentContent[meme.id],
-                });
-              }
-            }}
-          >
+          <form onSubmit={handleCreateComment}>
             <Flex alignItems="center">
               <Avatar
                 borderWidth="1px"
                 borderColor="gray.300"
-                name={user?.username}
-                src={user?.pictureUrl}
+                name={connectedUser?.username}
+                src={connectedUser?.pictureUrl}
                 size="sm"
                 mr={2}
               />
               <Input
                 placeholder="Type your comment here..."
                 onChange={(event) => {
-                  setCommentContent({
-                    ...commentContent,
-                    [meme.id]: event.target.value,
-                  });
+                  setCommentContent(event.target.value);
                 }}
-                value={commentContent[meme.id]}
+                value={commentContent}
               />
             </Flex>
           </form>
@@ -123,5 +124,6 @@ type MemeFeedItemProps = {
   // Create type
   meme: GetMemesResponse['results'][0];
   // Create type
-  user: GetUserByIdResponse | undefined;
+  connectedUser: GetUserByIdResponse | undefined;
+  author: GetUserByIdResponse | undefined;
 };

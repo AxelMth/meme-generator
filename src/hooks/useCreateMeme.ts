@@ -1,21 +1,23 @@
 import { useMutation } from '@tanstack/react-query';
 
 import { useAuthToken } from '../contexts/useAuthentication';
-import { createMemeComment } from '../api';
+import { CreateCommentResponse, createMemeComment } from '../api';
 
 type UseCreateMemeResponse = {
   createComment: (data: { memeId: string; content: string }) => void;
+  createdComment: CreateCommentResponse | undefined;
 };
 
 export const useCreateMeme = (): UseCreateMemeResponse => {
   const token = useAuthToken();
-  const { mutate } = useMutation({
-    mutationFn: async (data: { memeId: string; content: string }) => {
-      await createMemeComment(token, data.memeId, data.content);
+  const { mutate, data } = useMutation({
+    mutationFn: async ({ memeId, content }: { memeId: string; content: string }) => {
+      return createMemeComment(token, memeId, content);
     },
   });
 
   return {
     createComment: mutate,
+    createdComment: data,
   };
 };

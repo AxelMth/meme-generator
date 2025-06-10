@@ -70,7 +70,7 @@ export async function getUserById(token: string, id: string): Promise<GetUserByI
  * @returns
  */
 export async function getUsersByIds(token: string, ids: string[]): Promise<GetUserByIdResponse[]> {
-  return await fetch(`${BASE_URL}/users?ids=${ids.join(',')}`, {
+  return await fetch(`${BASE_URL}/users?${ids.map((id) => `ids=${id}`).join('&')}`, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
