@@ -13,8 +13,8 @@ import {
 } from "@tanstack/react-router";
 import {
   AuthenticationState,
-  useAuthentication,
 } from "../contexts/authentication";
+import { useAuthentication } from "../contexts/useAuthentication";
 import { UserDropdown } from "../components/user-dropdown";
 import { Plus } from "@phosphor-icons/react";
 
@@ -22,11 +22,10 @@ type RouterContext = {
   authState: AuthenticationState;
 };
 
-export const Route = createRootRouteWithContext<RouterContext>()({
-  component: () => {
-    const { state } = useAuthentication();
-    return (
-      <Flex width="full" height="full" direction="column">
+const AuthenticationRouteComponent: React.FC = () => {
+  const { state } = useAuthentication();
+  return (
+    <Flex width="full" height="full" direction="column">
         {/* Header */}
         <Flex
           bgColor="cyan.600"
@@ -59,6 +58,9 @@ export const Route = createRootRouteWithContext<RouterContext>()({
           <Outlet />
         </Flex>
       </Flex>
-    );
-  },
+  );
+};
+
+export const Route = createRootRouteWithContext<RouterContext>()({
+  component: AuthenticationRouteComponent
 });
