@@ -63,6 +63,21 @@ export async function getUserById(token: string, id: string): Promise<GetUserByI
   }).then(res => checkStatus(res).json())
 }
 
+/**
+ * Get a list of users by their ids
+ * @param token 
+ * @param ids 
+ * @returns 
+ */
+export async function getUsersByIds(token: string, ids: string[]): Promise<GetUserByIdResponse[]> {
+  return await fetch(`${BASE_URL}/users?ids=${ids.join(',')}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  }).then(res => checkStatus(res).json())
+}
+
 export type GetMemesResponse = {
   total: number;
   pageSize: number;
