@@ -7,15 +7,15 @@ Initially, it fetches the first page of memes, followed by subsequent pages.
 
 For every meme, it also retrieves:
 
-* the author information, and
-* the comments, page by page.
+- the author information, and
+- the comments, page by page.
 
 Assuming the following parameters:
 
-* `\text{pageNumber} = 10` (number of pages of memes)
-* `\text{memePerPage} = 20` (number of memes per page)
-* `\text{commentPerMeme} = 30` (average number of comments per meme)
-* `\text{commentPageSize} = 10` (number of comments per comment page)
+- `\text{pageNumber} = 10` (number of pages of memes)
+- `\text{memePerPage} = 20` (number of memes per page)
+- `\text{commentPerMeme} = 30` (average number of comments per meme)
+- `\text{commentPageSize} = 10` (number of comments per comment page)
 
 The total number of API calls becomes:
 
@@ -45,9 +45,9 @@ This significantly increases total load time and blocks UI updates.
 The code attempts to load **all memes at once** into memory.
 This can:
 
-* Slow down the application,
-* Lead to excessive memory usage,
-* Degrade user experience (especially on low-end devices).
+- Slow down the application,
+- Lead to excessive memory usage,
+- Degrade user experience (especially on low-end devices).
 
 **Recommendation**: Implement a strategy to fetch and render memes progressively (pagination or lazy loading).
 
@@ -59,8 +59,8 @@ This defeats the purpose of paginated APIs.
 **Solution**:
 Use pagination properly by either:
 
-* Implementing classic pagination (e.g., "Next" / "Previous" buttons), or
-* Using infinite scroll to load more data as the user scrolls.
+- Implementing classic pagination (e.g., "Next" / "Previous" buttons), or
+- Using infinite scroll to load more data as the user scrolls.
 
 ## Missing Caching Strategy
 
@@ -80,15 +80,15 @@ None of the API calls are wrapped with proper error handling.
 
 **Implications**:
 
-* If a call fails, the entire data flow can break,
-* Errors are not logged or shown to users,
-* Makes debugging and monitoring harder.
+- If a call fails, the entire data flow can break,
+- Errors are not logged or shown to users,
+- Makes debugging and monitoring harder.
 
 **Recommendation**:
 
-* Use `try/catch` or promise `.catch()` blocks,
-* Provide fallback UI or error messages,
-* Log errors appropriately for observability.
+- Use `try/catch` or promise `.catch()` blocks,
+- Provide fallback UI or error messages,
+- Log errors appropriately for observability.
 
 ---
 

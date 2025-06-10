@@ -1,22 +1,11 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  HStack,
-  Icon,
-  IconButton,
-  Input,
-  Textarea,
-  VStack,
-} from "@chakra-ui/react";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { MemeEditor } from "../../components/meme-editor";
-import { useMemo, useState } from "react";
-import { MemePictureProps } from "../../components/meme-picture";
-import { Plus, Trash } from "@phosphor-icons/react";
+import { Box, Button, Flex, Heading, HStack, Icon, IconButton, Input, Textarea, VStack } from '@chakra-ui/react';
+import { createFileRoute, Link } from '@tanstack/react-router';
+import { MemeEditor } from '../../components/meme-editor';
+import { useMemo, useState } from 'react';
+import { MemePictureProps } from '../../components/meme-picture';
+import { Plus, Trash } from '@phosphor-icons/react';
 
-export const Route = createFileRoute("/_authentication/create")({
+export const Route = createFileRoute('/_authentication/create')({
   component: CreateMemePage,
 });
 
@@ -27,7 +16,7 @@ type Picture = {
 
 function CreateMemePage() {
   const [picture, setPicture] = useState<Picture | null>(null);
-  const [texts, setTexts] = useState<MemePictureProps["texts"]>([]);
+  const [texts, setTexts] = useState<MemePictureProps['texts']>([]);
 
   const handleDrop = (file: File) => {
     setPicture({
@@ -80,13 +69,7 @@ function CreateMemePage() {
           </Box>
         </VStack>
       </Box>
-      <Flex
-        flexDir="column"
-        width="30%"
-        minW="250"
-        height="full"
-        boxShadow="lg"
-      >
+      <Flex flexDir="column" width="30%" minW="250" height="full" boxShadow="lg">
         <Heading as="h2" size="md" mb={2} p={4}>
           Add your captions
         </Heading>
@@ -116,23 +99,10 @@ function CreateMemePage() {
           </VStack>
         </Box>
         <HStack p={4}>
-          <Button
-            as={Link}
-            to="/"
-            colorScheme="cyan"
-            variant="outline"
-            size="sm"
-            width="full"
-          >
+          <Button as={Link} to="/" colorScheme="cyan" variant="outline" size="sm" width="full">
             Cancel
           </Button>
-          <Button
-            colorScheme="cyan"
-            size="sm"
-            width="full"
-            color="white"
-            isDisabled={memePicture === undefined}
-          >
+          <Button colorScheme="cyan" size="sm" width="full" color="white" isDisabled={memePicture === undefined}>
             Submit
           </Button>
         </HStack>

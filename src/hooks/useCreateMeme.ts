@@ -1,7 +1,7 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation } from '@tanstack/react-query';
 
-import { useAuthToken } from "../contexts/useAuthentication";
-import { createMemeComment } from "../api";
+import { useAuthToken } from '../contexts/useAuthentication';
+import { createMemeComment } from '../api';
 
 export const useCreateMeme = () => {
   const token = useAuthToken();

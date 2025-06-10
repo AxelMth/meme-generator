@@ -1,11 +1,5 @@
-import { jwtDecode } from "jwt-decode";
-import {
-  createContext,
-  PropsWithChildren,
-  useCallback,
-  useMemo,
-  useState,
-} from "react";
+import { jwtDecode } from 'jwt-decode';
+import { createContext, PropsWithChildren, useCallback, useMemo, useState } from 'react';
 
 export type AuthenticationState =
   | {
@@ -23,13 +17,9 @@ export type Authentication = {
   signout: () => void;
 };
 
-export const AuthenticationContext = createContext<Authentication | undefined>(
-  undefined,
-);
+export const AuthenticationContext = createContext<Authentication | undefined>(undefined);
 
-export const AuthenticationProvider: React.FC<PropsWithChildren> = ({
-  children,
-}) => {
+export const AuthenticationProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [state, setState] = useState<AuthenticationState>({
     isAuthenticated: false,
   });
@@ -42,21 +32,14 @@ export const AuthenticationProvider: React.FC<PropsWithChildren> = ({
         userId: jwtDecode<{ id: string }>(token).id,
       });
     },
-    [setState],
+    [setState]
   );
 
   const signout = useCallback(() => {
     setState({ isAuthenticated: false });
   }, [setState]);
 
-  const contextValue = useMemo(
-    () => ({ state, authenticate, signout }),
-    [state, authenticate, signout],
-  );
+  const contextValue = useMemo(() => ({ state, authenticate, signout }), [state, authenticate, signout]);
 
-  return (
-    <AuthenticationContext.Provider value={contextValue}>
-      {children}
-    </AuthenticationContext.Provider>
-  );
+  return <AuthenticationContext.Provider value={contextValue}>{children}</AuthenticationContext.Provider>;
 };
