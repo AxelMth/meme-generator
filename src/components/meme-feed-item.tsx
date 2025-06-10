@@ -1,25 +1,30 @@
 import { Avatar, Box, Collapse, Flex, Icon, LinkBox, LinkOverlay, Text, Input, VStack, Button } from '@chakra-ui/react';
 import { CaretDown, CaretUp, Chat } from '@phosphor-icons/react';
 import { format } from 'timeago.js';
+import { useState } from 'react';
 
 import { Loader } from './loader';
 import { Comment } from './comment';
 import { MemePicture } from './meme-picture';
-import { GetMemeCommentsResponse, GetMemesResponse, GetUserByIdResponse } from '../api';
 
-export const MemeFeedItem = ({
-  meme,
-  openedCommentSection,
-  setOpenedCommentSection,
-  isLoadingComments,
-  comments,
-  hasNextComments,
-  fetchNextComments,
-  commentContent,
-  setCommentContent,
-  user,
-  createComment,
-}: MemeFeedItemProps) => {
+import { useCreateMeme } from '../hooks/useCreateMeme';
+import { useMemeComments } from '../hooks/useMemeComments';
+
+import { GetMemesResponse, GetUserByIdResponse } from '../api';
+
+export const MemeFeedItem = ({ meme, user }: MemeFeedItemProps) => {
+  const [openedCommentSection, setOpenedCommentSection] = useState<string | null>(null);
+  const {
+    comments,
+    isLoading: isLoadingComments,
+    fetchNextComments,
+    hasNextComments,
+  } = useMemeComments(openedCommentSection);
+
+  const [commentContent, setCommentContent] = useState<{
+    [key: string]: string;
+  }>({});
+  const { createComment } = useCreateMeme();
   return (
     <VStack key={meme.id} p={4} width="full" align="stretch">
       <Flex justifyContent="space-between" alignItems="center">
@@ -117,17 +122,6 @@ export const MemeFeedItem = ({
 type MemeFeedItemProps = {
   // Create type
   meme: GetMemesResponse['results'][0];
-  openedCommentSection: string | null;
-  setOpenedCommentSection: (id: string | null) => void;
-  isLoadingComments: boolean;
   // Create type
-  comments: GetMemeCommentsResponse['results'];
-  hasNextComments: boolean;
-  fetchNextComments: () => void;
-  commentContent: {
-    [key: string]: string;
-  };
-  setCommentContent: (content: { [key: string]: string }) => void;
   user: GetUserByIdResponse | undefined;
-  createComment: (data: { memeId: string; content: string }) => void;
 };
