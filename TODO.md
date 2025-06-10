@@ -1,0 +1,2 @@
+- eslint is deprecated
+- dark mode
