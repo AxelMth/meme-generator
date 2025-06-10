@@ -24,7 +24,7 @@ import {
   getUserById,
   GetUserByIdResponse,
 } from "../../api";
-import { useAuthToken } from "../../contexts/authentication";
+import { useAuthToken } from "../../contexts/useAuthentication";
 import { Loader } from "../../components/loader";
 import { MemePicture } from "../../components/meme-picture";
 import { useState } from "react";

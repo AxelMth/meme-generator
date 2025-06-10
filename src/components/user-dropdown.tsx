@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { CaretDown, CaretUp, SignOut } from "@phosphor-icons/react";
-import { useAuthentication } from "../contexts/authentication";
+import { useAuthentication } from "../contexts/useAuthentication";
 import { getUserById } from "../api";
 
 export const UserDropdown: React.FC = () => {
