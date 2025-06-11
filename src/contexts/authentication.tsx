@@ -20,22 +20,24 @@ export type Authentication = {
 export const AuthenticationContext = createContext<Authentication | undefined>(undefined);
 
 export const AuthenticationProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [state, setState] = useState<AuthenticationState>({
-    isAuthenticated: false,
+  const [state, setState] = useState<AuthenticationState>(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return { isAuthenticated: false };
+    }
+    return generateStateFromToken(token);
   });
 
   const authenticate = useCallback(
     (token: string) => {
-      setState({
-        isAuthenticated: true,
-        token,
-        userId: jwtDecode<{ id: string }>(token).id,
-      });
+      localStorage.setItem('token', token);
+      setState(generateStateFromToken(token));
     },
     [setState]
   );
 
   const signout = useCallback(() => {
+    localStorage.removeItem('token');
     setState({ isAuthenticated: false });
   }, [setState]);
 
@@ -43,3 +45,7 @@ export const AuthenticationProvider: React.FC<PropsWithChildren> = ({ children }
 
   return <AuthenticationContext.Provider value={contextValue}>{children}</AuthenticationContext.Provider>;
 };
+
+function generateStateFromToken(token: string): AuthenticationState {
+  return { isAuthenticated: true, token, userId: jwtDecode<{ id: string }>(token).id };
+}
