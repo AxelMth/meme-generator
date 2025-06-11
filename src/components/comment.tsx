@@ -16,10 +16,17 @@ export const Comment = ({ comment, author, memeId }: CommentProps) => {
   return (
     <Flex key={comment.id}>
       <Avatar borderWidth="1px" borderColor="gray.300" size="sm" name={authorName} src={authorPictureUrl} mr={2} />
-      <Box p={2} borderRadius={8} bg="gray.50" flexGrow={1}>
+      <Box p={2} borderRadius={8} bg="gray.50" border="1px solid" borderColor="gray.100" flexGrow={1}>
         <Flex justifyContent="space-between" alignItems="center">
           <Flex>
-            <Text data-testid={`meme-comment-author-${memeId}-${comment.id}`}>{authorName}</Text>
+            <Text
+              data-testid={`meme-comment-author-${memeId}-${comment.id}`}
+              fontWeight="bold"
+              fontSize="sm"
+              color="gray.500"
+            >
+              {authorName}
+            </Text>
           </Flex>
           <Text fontStyle="italic" color="gray.500" fontSize="small">
             {format(comment.createdAt)}

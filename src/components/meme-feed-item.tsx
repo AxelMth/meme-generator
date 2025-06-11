@@ -140,8 +140,18 @@ export const MemeFeedItem = ({ meme, connectedUser, author }: MemeFeedItemProps)
           ))}
           {hasNextComments && (
             <Box py={4} width="full" textAlign="center">
-              <Button onClick={fetchNextComments} isLoading={isLoadingComments}>
-                Load more comments
+              <Button
+                onClick={fetchNextComments}
+                cursor="pointer"
+                backgroundColor="transparent"
+                color="gray.500"
+                fontWeight="bold"
+                fontSize="sm"
+                _hover={{ backgroundColor: 'transparent', color: 'blue.500' }}
+                isLoading={isLoadingComments}
+                disabled={isLoadingComments}
+              >
+                Load 10 more comments
               </Button>
             </Box>
           )}
