@@ -122,7 +122,7 @@ function CreateMemePage() {
               </Flex>
             ))}
             <Button
-              colorScheme="cyan"
+              colorScheme="dark"
               leftIcon={<Icon as={Plus} />}
               variant="ghost"
               size="sm"
@@ -135,14 +135,14 @@ function CreateMemePage() {
           </VStack>
         </Box>
         <HStack p={4}>
-          <Button as={Link} to="/" colorScheme="cyan" variant="outline" size="sm" width="full">
+          <Button as={Link} to="/" colorScheme="dark" variant="outline" size="sm" width="full">
             Cancel
           </Button>
           <Button
-            colorScheme="cyan"
+            backgroundColor="black"
+            color="white"
             size="sm"
             width="full"
-            color="white"
             isDisabled={memePicture === undefined}
             onClick={handleSubmit}
           >
