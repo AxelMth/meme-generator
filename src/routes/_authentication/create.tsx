@@ -40,6 +40,10 @@ function CreateMemePage() {
     setTexts(texts.filter((_, i) => i !== index));
   };
 
+  const handleCaptionChange = (index: number, value: string) => {
+    setTexts(texts.map((text, i) => (i === index ? { ...text, content: value } : text)));
+  };
+
   const memePicture = useMemo(() => {
     if (!picture) {
       return undefined;
@@ -77,7 +81,12 @@ function CreateMemePage() {
           <VStack>
             {texts.map((text, index) => (
               <Flex width="full">
-                <Input key={index} value={text.content} mr={1} />
+                <Input
+                  key={index}
+                  value={text.content}
+                  mr={1}
+                  onChange={(e) => handleCaptionChange(index, e.target.value)}
+                />
                 <IconButton
                   onClick={() => handleDeleteCaptionButtonClick(index)}
                   aria-label="Delete caption"
