@@ -1,9 +1,11 @@
 import { Box, Button, Flex, Heading, HStack, Icon, IconButton, Input, Textarea, VStack } from '@chakra-ui/react';
-import { createFileRoute, Link } from '@tanstack/react-router';
-import { MemeEditor } from '../../components/meme-editor';
-import { useMemo, useState } from 'react';
-import { MemePictureProps } from '../../components/meme-picture';
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
 import { Plus, Trash } from '@phosphor-icons/react';
+import { useEffect, useMemo, useState } from 'react';
+
+import { MemeEditor } from '../../components/meme-editor';
+import { MemePictureProps } from '../../components/meme-picture';
+import { useCreateMeme } from '../../hooks/useCreateMeme';
 
 export const Route = createFileRoute('/_authentication/create')({
   component: CreateMemePage,
@@ -15,6 +17,8 @@ type Picture = {
 };
 
 function CreateMemePage() {
+  const navigate = useNavigate();
+
   const [picture, setPicture] = useState<Picture | null>(null);
   const [texts, setTexts] = useState<MemePictureProps['texts']>([]);
 
@@ -36,12 +40,35 @@ function CreateMemePage() {
     ]);
   };
 
+  const handleCaptionChange = (index: number, value: string) => {
+    setTexts(texts.map((text, i) => (i === index ? { ...text, content: value } : text)));
+  };
+
   const handleDeleteCaptionButtonClick = (index: number) => {
     setTexts(texts.filter((_, i) => i !== index));
   };
 
-  const handleCaptionChange = (index: number, value: string) => {
-    setTexts(texts.map((text, i) => (i === index ? { ...text, content: value } : text)));
+  const { createMeme, createdMeme } = useCreateMeme();
+
+  useEffect(() => {
+    if (createdMeme) {
+      navigate({ to: '/' });
+    }
+  }, [createdMeme, navigate]);
+
+  const handleSubmit = () => {
+    if (!memePicture || !picture) {
+      return;
+    }
+    createMeme({
+      picture: picture.file,
+      description: 'test',
+      texts: texts.map((text) => ({
+        content: text.content,
+        x: Math.round(text.x),
+        y: Math.round(text.y),
+      })),
+    });
   };
 
   const memePicture = useMemo(() => {
@@ -111,7 +138,14 @@ function CreateMemePage() {
           <Button as={Link} to="/" colorScheme="cyan" variant="outline" size="sm" width="full">
             Cancel
           </Button>
-          <Button colorScheme="cyan" size="sm" width="full" color="white" isDisabled={memePicture === undefined}>
+          <Button
+            colorScheme="cyan"
+            size="sm"
+            width="full"
+            color="white"
+            isDisabled={memePicture === undefined}
+            onClick={handleSubmit}
+          >
             Submit
           </Button>
         </HStack>

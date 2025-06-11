@@ -78,6 +78,48 @@ export async function getUsersByIds(token: string, ids: string[]): Promise<GetUs
   }).then((res) => checkStatus(res).json());
 }
 
+export type CreateMemePayload = {
+  picture: File;
+  description: string;
+  texts: {
+    content: string;
+    x: number;
+    y: number;
+  }[];
+};
+
+export type CreateMemeResponse = {
+  id: string;
+  createdAt: string;
+  authorId: string;
+  pictureUrl: string;
+  description: string;
+};
+
+/**
+ * Create a meme
+ * @param token
+ * @param meme
+ * @returns
+ */
+export async function createMeme(token: string, meme: CreateMemePayload): Promise<CreateMemeResponse> {
+  const formData = new FormData();
+  formData.append('Picture', meme.picture);
+  formData.append('Description', meme.description);
+  meme.texts.forEach((text, index) => {
+    formData.append(`Texts[${index}][Content]`, text.content);
+    formData.append(`Texts[${index}][X]`, text.x.toString());
+    formData.append(`Texts[${index}][Y]`, text.y.toString());
+  });
+  return await fetch(`${BASE_URL}/memes`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  }).then((res) => checkStatus(res).json());
+}
+
 export type GetMemesResponse = {
   total: number;
   pageSize: number;

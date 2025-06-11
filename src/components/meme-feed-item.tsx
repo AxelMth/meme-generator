@@ -7,7 +7,7 @@ import { Loader } from './loader';
 import { Comment } from './comment';
 import { MemePicture } from './meme-picture';
 
-import { useCreateMeme } from '../hooks/useCreateMeme';
+import { useCreateMemeComment } from '../hooks/useCreateMemeComment';
 import { useMemeComments } from '../hooks/useMemeComments';
 import { useUsersByIds } from '../hooks/useUsersByIds';
 
@@ -43,7 +43,7 @@ export const MemeFeedItem = ({ meme, connectedUser, author }: MemeFeedItemProps)
   }, [authors]);
 
   const [commentContent, setCommentContent] = useState('');
-  const { createComment, createdComment } = useCreateMeme();
+  const { createComment, createdComment } = useCreateMemeComment({ memeId: meme.id });
 
   useEffect(() => {
     if (createdComment) {
@@ -59,7 +59,6 @@ export const MemeFeedItem = ({ meme, connectedUser, author }: MemeFeedItemProps)
       return;
     }
     createComment({
-      memeId: meme.id,
       content: commentContent,
     });
   };
