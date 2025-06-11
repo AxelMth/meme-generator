@@ -3,10 +3,11 @@ import { format } from 'timeago.js';
 
 import { Avatar } from '@chakra-ui/react';
 
-import { GetMemeCommentsResponse, GetUserByIdResponse } from '../api';
+import { GetUserByIdResponse } from '../api';
+import { Comment as CommentType } from '../types/comment';
 
 type CommentProps = {
-  comment: GetMemeCommentsResponse['results'][0];
+  comment: CommentType;
   author: GetUserByIdResponse | undefined;
   memeId: string;
 };

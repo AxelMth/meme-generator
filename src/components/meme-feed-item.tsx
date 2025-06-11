@@ -24,7 +24,9 @@ import { useCreateMemeComment } from '../hooks/useCreateMemeComment';
 import { useMemeComments } from '../hooks/useMemeComments';
 import { useUsersByIds } from '../hooks/useUsersByIds';
 
-import { GetMemesResponse, GetUserByIdResponse } from '../api';
+import { GetUserByIdResponse } from '../api';
+import { type Meme } from '../types/meme';
+import { type User } from '../types/user';
 
 export const MemeFeedItem = ({ meme, connectedUser, author }: MemeFeedItemProps) => {
   const [openedCommentSection, setOpenedCommentSection] = useState<string | null>(null);
@@ -184,9 +186,7 @@ export const MemeFeedItem = ({ meme, connectedUser, author }: MemeFeedItemProps)
 };
 
 type MemeFeedItemProps = {
-  // Create type
-  meme: GetMemesResponse['results'][0];
-  // Create type
-  connectedUser: GetUserByIdResponse | undefined;
-  author: GetUserByIdResponse | undefined;
+  meme: Meme;
+  connectedUser: User | undefined;
+  author: User | undefined;
 };

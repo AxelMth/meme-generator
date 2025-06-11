@@ -4,16 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import { useAuthToken } from '../contexts/useAuthentication';
 import { GetMemeCommentsResponse, getMemeComments as getMemeCommentsApi } from '../api';
-
-type UseMemeCommentsResponse = {
-  comments: GetMemeCommentsResponse['results'];
-  commentsCount: number;
-  isLoading: boolean;
-  error: Error | null;
-  fetchNextComments: () => void;
-  hasNextComments: boolean;
-  addComment: (comment: GetMemeCommentsResponse['results'][0]) => void;
-};
+import { Comment } from '../types/comment';
 
 export const useMemeComments = (memeId: string | null): UseMemeCommentsResponse => {
   const token = useAuthToken();
@@ -76,4 +67,14 @@ export const useMemeComments = (memeId: string | null): UseMemeCommentsResponse 
     hasNextComments,
     addComment,
   };
+};
+
+type UseMemeCommentsResponse = {
+  comments: Comment[];
+  commentsCount: number;
+  isLoading: boolean;
+  error: Error | null;
+  fetchNextComments: () => void;
+  hasNextComments: boolean;
+  addComment: (comment: GetMemeCommentsResponse['results'][0]) => void;
 };

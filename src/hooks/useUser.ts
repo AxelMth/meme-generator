@@ -1,10 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { jwtDecode } from 'jwt-decode';
 
-import { getUserById, GetUserByIdResponse } from '../api';
+import { getUserById } from '../api';
 import { useAuthToken } from '../contexts/useAuthentication';
+import { User } from '../types/user';
 
-export const useUser = (): { user: GetUserByIdResponse | undefined; isLoading: boolean; error: Error | null } => {
+export const useUser = (): UseUserResponse => {
   const token = useAuthToken();
   const { data, isLoading, error } = useQuery({
     queryKey: ['user'],
@@ -13,4 +14,10 @@ export const useUser = (): { user: GetUserByIdResponse | undefined; isLoading: b
     },
   });
   return { user: data, isLoading, error };
+};
+
+type UseUserResponse = {
+  user: User | undefined;
+  isLoading: boolean;
+  error: Error | null;
 };

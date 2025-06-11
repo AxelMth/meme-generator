@@ -1,7 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
 
 import { useAuthToken } from '../contexts/useAuthentication';
-import { CreateCommentResponse, createMemeComment } from '../api';
+import { createMemeComment } from '../api';
+import { Comment } from '../types/comment';
 
 type UseCreateMemeCommentProps = {
   memeId: string;
@@ -9,7 +10,7 @@ type UseCreateMemeCommentProps = {
 
 type UseCreateMemeCommentResponse = {
   createComment: (data: { content: string }) => void;
-  createdComment: CreateCommentResponse | undefined;
+  createdComment: Comment | undefined;
 };
 
 export const useCreateMemeComment = ({ memeId }: UseCreateMemeCommentProps): UseCreateMemeCommentResponse => {
