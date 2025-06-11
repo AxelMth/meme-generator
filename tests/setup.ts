@@ -13,6 +13,8 @@ class ResizeObserverMock {
 
 global.ResizeObserver = ResizeObserverMock;
 
+window.scrollTo = vi.fn();
+
 const server = setupServer(...handlers);
 
 beforeAll(() => server.listen());

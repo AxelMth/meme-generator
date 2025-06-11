@@ -1,7 +1,7 @@
 import { Avatar, Box, Collapse, Flex, Icon, LinkBox, LinkOverlay, Text, Input, VStack, Button } from '@chakra-ui/react';
 import { CaretDown, CaretUp, Chat } from '@phosphor-icons/react';
 import { format } from 'timeago.js';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { Loader } from './loader';
 import { Comment } from './comment';
@@ -9,6 +9,7 @@ import { MemePicture } from './meme-picture';
 
 import { useCreateMeme } from '../hooks/useCreateMeme';
 import { useMemeComments } from '../hooks/useMemeComments';
+import { useUsersByIds } from '../hooks/useUsersByIds';
 
 import { GetMemesResponse, GetUserByIdResponse } from '../api';
 
@@ -21,6 +22,25 @@ export const MemeFeedItem = ({ meme, connectedUser, author }: MemeFeedItemProps)
     hasNextComments,
     addComment,
   } = useMemeComments(openedCommentSection);
+
+  const authorIds = useMemo(() => {
+    return [...new Set(comments.map((comment) => comment.authorId))];
+  }, [comments]);
+
+  const { users: authors } = useUsersByIds(authorIds);
+
+  const authorById = useMemo(() => {
+    if (!authors) {
+      return {};
+    }
+    return authors.reduce(
+      (acc, author) => {
+        acc[author.id] = author;
+        return acc;
+      },
+      {} as Record<string, GetUserByIdResponse>
+    );
+  }, [authors]);
 
   const [commentContent, setCommentContent] = useState('');
   const { createComment, createdComment } = useCreateMeme();
@@ -87,7 +107,7 @@ export const MemeFeedItem = ({ meme, connectedUser, author }: MemeFeedItemProps)
         <VStack align="stretch" spacing={4}>
           {isLoadingComments && <Loader data-testid="meme-comments-loader" />}
           {comments.map((comment) => (
-            <Comment key={comment.id} comment={comment} memeId={meme.id} />
+            <Comment key={comment.id} comment={comment} author={authorById[comment.authorId]} memeId={meme.id} />
           ))}
           {hasNextComments && !isLoadingComments && (
             <Box py={4} width="full" textAlign="center">
