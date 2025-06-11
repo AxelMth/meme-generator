@@ -53,7 +53,7 @@ export function renderWithRouter({
   router.subscribe('onBeforeNavigate', onNavigate);
   const renderResult = render(
     <Wrapper>
-      <RouterProvider router={router} />;
+      <RouterProvider router={router} />
     </Wrapper>
   );
 
