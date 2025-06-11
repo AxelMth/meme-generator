@@ -124,18 +124,3 @@ pnpm coverage
 └── tests
     └── mocks                # API mocks for testing (MSW handlers)
 ```
-
----
-
-## Submission
-
-Once completed, submit your test using this [form](https://forms.microsoft.com/e/n8eGwmMLe1).
-We’ll review it within 48 hours and get in touch.
-
-If you have any questions, feel free to reach out to your hiring manager.
-
-Happy coding! 🚀
-
----
-
-Let me know if you'd like this turned into a downloadable file or a Git commit.
