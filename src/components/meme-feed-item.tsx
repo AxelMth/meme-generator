@@ -117,7 +117,7 @@ export const MemeFeedItem = ({ meme, connectedUser, author }: MemeFeedItemProps)
             <LinkOverlay data-testid={`meme-comments-section-${meme.id}`} cursor="pointer">
               <Text data-testid={`meme-comments-count-${meme.id}`}>
                 <Icon as={Chat} mr={2} />
-                {commentsCount || meme.commentsCount} comments
+                {commentsCount || meme.commentsCount} comment{commentsCount || meme.commentsCount > 1 ? 's' : ''}
               </Text>
             </LinkOverlay>
             <Link
