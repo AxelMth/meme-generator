@@ -1,6 +1,6 @@
 import { useDropzone } from 'react-dropzone';
 import { MemePicture, MemePictureProps } from './meme-picture';
-import { AspectRatio, Box, Button, Flex, Icon, Text } from '@chakra-ui/react';
+import { AspectRatio, Box, Button, Flex, Icon, Link, Text } from '@chakra-ui/react';
 import { Image, Pencil } from '@phosphor-icons/react';
 
 export type MemeEditorProps = {
@@ -12,7 +12,7 @@ function renderNoPicture() {
   return (
     <Flex flexDir="column" width="full" height="full" alignItems="center" justifyContent="center">
       <Icon as={Image} color="black" boxSize={16} />
-      <Text>Select a picture</Text>
+      <Link>Select a picture</Link>
       <Text color="gray.400" fontSize="sm">
         or drop it in this area
       </Text>
