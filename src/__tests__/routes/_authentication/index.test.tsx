@@ -1,4 +1,4 @@
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 
@@ -71,7 +71,7 @@ describe('routes/_authentication/index', () => {
         expect(screen.getByTestId(`meme-comments-count-${memeId}`)).toHaveTextContent('3 comments');
       });
 
-      await waitFor(() => {
+      act(() => {
         fireEvent.click(screen.getByTestId(`meme-comments-section-${memeId}`));
       });
 
@@ -94,10 +94,13 @@ describe('routes/_authentication/index', () => {
       const commentId = 'dummy_comment_id_1';
 
       const commentInput = await screen.findByTestId(`meme-comment-input-meme_id_${memeId}`);
-      fireEvent.change(commentInput, { target: { value: 'dummy comment 1' } });
-      fireEvent.submit(commentInput);
 
-      fireEvent.click(screen.getByTestId(`meme-comments-section-${memeId}`));
+      act(() => {
+        fireEvent.change(commentInput, { target: { value: 'dummy comment 1' } });
+        fireEvent.submit(commentInput);
+        fireEvent.click(screen.getByTestId(`meme-comments-section-${memeId}`));
+      });
+
       await waitFor(() => {
         expect(screen.getByTestId(`meme-comment-content-${memeId}-${commentId}`)).toHaveTextContent('dummy comment 1');
       });
