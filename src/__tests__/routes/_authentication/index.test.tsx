@@ -1,6 +1,7 @@
-import { screen, waitFor } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+
 import { AuthenticationContext } from '../../../contexts/authentication';
 import { MemeFeedPage } from '../../../routes/_authentication/index';
 import { renderWithRouter } from '../../utils';
@@ -85,6 +86,22 @@ describe('routes/_authentication/index', () => {
         expect(screen.getByTestId('meme-comment-author-dummy_meme_id_1-dummy_comment_id_3')).toHaveTextContent(
           'dummy_user_3'
         );
+      });
+    });
+
+    it.only('should create a comment when the user submits the comment form', async () => {
+      renderMemeFeedPage();
+
+      const memeId = 'dummy_meme_id_1';
+      const commentId = 'dummy_comment_id_1';
+
+      const commentInput = await screen.findByTestId(`meme-comment-input-meme_id_${memeId}`);
+      fireEvent.change(commentInput, { target: { value: 'dummy comment 1' } });
+      fireEvent.submit(commentInput);
+
+      fireEvent.click(screen.getByTestId(`meme-comments-section-${memeId}`));
+      await waitFor(() => {
+        expect(screen.getByTestId(`meme-comment-content-${memeId}-${commentId}`)).toHaveTextContent('dummy comment 1');
       });
     });
   });

@@ -86,6 +86,9 @@ export const handlers = [
       status: 404,
     });
   }),
+  http.get('https://fetestapi.int.mozzaik365.net/api/users', async () => {
+    return HttpResponse.json(Object.values(users));
+  }),
   http.get('https://fetestapi.int.mozzaik365.net/api/memes', async () => {
     return HttpResponse.json({
       total: memes.length,
@@ -99,6 +102,16 @@ export const handlers = [
       total: memeComments.length,
       pageSize: memeComments.length,
       results: memeComments,
+    });
+  }),
+  http.post('https://fetestapi.int.mozzaik365.net/api/memes/:id/comments', async ({ params, request }) => {
+    const { content } = await request.json();
+    return HttpResponse.json({
+      id: 'dummy_comment_id_4',
+      memeId: params.id,
+      authorId: Object.values(users)[0].id,
+      content,
+      createdAt: new Date().toISOString(),
     });
   }),
 ];

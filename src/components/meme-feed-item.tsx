@@ -107,6 +107,7 @@ export const MemeFeedItem = ({ meme, connectedUser, author }: MemeFeedItemProps)
                 mr={2}
               />
               <Input
+                data-testid={`meme-comment-input-meme_id_${meme.id}`}
                 placeholder="Type your comment here..."
                 onChange={(event) => {
                   setCommentContent(event.target.value);
