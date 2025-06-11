@@ -93,6 +93,8 @@ pnpm coverage
 
 - ✅ Deployed preview: [https://meme-generator.axelmathi.eu/login](https://meme-generator.axelmathi.eu/login)
 
+Pushing on main will automatically deploy a new version of this app in vercel.
+
 ---
 
 ## 🛠️ Additional Actions
