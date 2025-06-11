@@ -18,7 +18,7 @@ export const useMemes = (): UseMemesResponse => {
       const { results, total, pageSize } = await getMemes(token, pageParam);
       return { results: results, total, pageSize };
     },
-    getNextPageParam: (lastPage, pages, previousPageParam) => previousPageParam + 1,
+    getNextPageParam: (_lastPage, _pages, previousPageParam) => previousPageParam + 1,
     initialPageParam: 1,
   });
   return { memes: data?.pages.flatMap((page) => page.results) ?? [], isLoading, error, fetchNextPage, hasNextPage };
