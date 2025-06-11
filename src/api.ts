@@ -14,6 +14,8 @@ export class NotFoundError extends Error {
 
 function checkStatus(response: Response) {
   if (response.status === 401) {
+    // The perfect way to handle this kind of side effect is to have an interceptor in the axios instance
+    localStorage.removeItem('token');
     throw new UnauthorizedError();
   }
   if (response.status === 404) {

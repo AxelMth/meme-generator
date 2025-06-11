@@ -68,9 +68,13 @@ export const useMemeComments = (memeId: string | null): UseMemeCommentsResponse 
     }
   }, [hasNextComments, page]);
 
-  const addComment = useCallback((comment: GetMemeCommentsResponse['results'][0]) => {
-    setComments((prev) => [...prev, comment]);
-  }, []);
+  const addComment = useCallback(
+    (comment: GetMemeCommentsResponse['results'][0]) => {
+      setComments((prev) => [...prev, comment]);
+      setTotal(total + 1);
+    },
+    [total, setComments, setTotal]
+  );
 
   return {
     comments,

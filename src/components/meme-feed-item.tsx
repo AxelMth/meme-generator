@@ -17,14 +17,26 @@ export const MemeFeedItem = ({ meme, connectedUser, author }: MemeFeedItemProps)
   const [openedCommentSection, setOpenedCommentSection] = useState<string | null>(null);
   const {
     comments,
+    commentsCount: commentsCountFromApi,
     isLoading: isLoadingComments,
     fetchNextComments,
     hasNextComments,
     addComment,
   } = useMemeComments(openedCommentSection);
 
+  const commentCount = useMemo(() => {
+    if (commentsCountFromApi > +meme.commentsCount) {
+      return commentsCountFromApi;
+    }
+    return +meme.commentsCount;
+  }, [commentsCountFromApi, meme.commentsCount]);
+
   const authorIds = useMemo(() => {
     return [...new Set(comments.map((comment) => comment.authorId))];
+  }, [comments]);
+
+  const sortedComments = useMemo(() => {
+    return comments.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
   }, [comments]);
 
   const { users: authors } = useUsersByIds(authorIds);
@@ -45,12 +57,10 @@ export const MemeFeedItem = ({ meme, connectedUser, author }: MemeFeedItemProps)
   const [commentContent, setCommentContent] = useState('');
   const { createComment, createdComment } = useCreateMemeComment({ memeId: meme.id });
 
-  useEffect(() => {
-    if (createdComment) {
-      addComment(createdComment);
-      setCommentContent('');
-    }
-  }, [createdComment, addComment]);
+  if (createdComment && !comments.find((comment) => comment.id === createdComment?.id)) {
+    addComment(createdComment);
+    setCommentContent('');
+  }
 
   const handleCreateComment = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -95,7 +105,7 @@ export const MemeFeedItem = ({ meme, connectedUser, author }: MemeFeedItemProps)
               cursor="pointer"
               onClick={() => setOpenedCommentSection(openedCommentSection === meme.id ? null : meme.id)}
             >
-              <Text data-testid={`meme-comments-count-${meme.id}`}>{meme.commentsCount} comments</Text>
+              <Text data-testid={`meme-comments-count-${meme.id}`}>{commentCount} comments</Text>
             </LinkOverlay>
             <Icon as={openedCommentSection !== meme.id ? CaretDown : CaretUp} ml={2} mt={1} />
           </Flex>
@@ -105,12 +115,14 @@ export const MemeFeedItem = ({ meme, connectedUser, author }: MemeFeedItemProps)
       <Collapse in={openedCommentSection === meme.id} animateOpacity>
         <VStack align="stretch" spacing={4}>
           {isLoadingComments && <Loader data-testid="meme-comments-loader" />}
-          {comments.map((comment) => (
+          {sortedComments.map((comment) => (
             <Comment key={comment.id} comment={comment} author={authorById[comment.authorId]} memeId={meme.id} />
           ))}
-          {hasNextComments && !isLoadingComments && (
+          {hasNextComments && (
             <Box py={4} width="full" textAlign="center">
-              <Button onClick={fetchNextComments}>Load more comments</Button>
+              <Button onClick={fetchNextComments} isLoading={isLoadingComments}>
+                Load more comments
+              </Button>
             </Box>
           )}
         </VStack>
