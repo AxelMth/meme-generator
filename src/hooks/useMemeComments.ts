@@ -1,11 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { useAuthToken } from '../contexts/useAuthentication';
 import { GetMemeCommentsResponse, getMemeComments as getMemeCommentsApi } from '../api';
 
 type UseMemeCommentsResponse = {
   comments: GetMemeCommentsResponse['results'];
+  commentsCount: number;
   isLoading: boolean;
   error: Error | null;
   fetchNextComments: () => void;
@@ -15,6 +17,7 @@ type UseMemeCommentsResponse = {
 
 export const useMemeComments = (memeId: string | null): UseMemeCommentsResponse => {
   const token = useAuthToken();
+  const queryClient = useQueryClient();
 
   const initialPage = 1;
   const initialTotal = 0;
@@ -36,21 +39,34 @@ export const useMemeComments = (memeId: string | null): UseMemeCommentsResponse 
         return [];
       }
       const { results, total } = await getMemeCommentsApi(token, memeId, page);
-      setComments((prev) => {
-        const newComments = [...prev, ...results];
-        return newComments.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-      });
       setTotal(total);
-      return results;
+      return { results, total };
     },
     enabled: !!memeId,
   });
 
+  useEffect(() => {
+    if (isLoading || !memeId) return;
+
+    const queryData = queryClient.getQueryData(['memeComments', memeId, page]);
+    if (!queryData) return;
+
+    const { results } = queryData as { results: GetMemeCommentsResponse['results'] };
+    setComments((prev) => {
+      const newComments = [...prev, ...results];
+      const uniqueComments = newComments.filter(
+        (comment, index, self) => index === self.findIndex((t) => t.id === comment.id)
+      );
+      return uniqueComments;
+    });
+  }, [isLoading, memeId, page, queryClient]);
+
+  const hasNextComments = useMemo(() => comments.length < total, [comments.length, total]);
   const fetchNextPage = useCallback(() => {
-    if (comments.length < total) {
+    if (hasNextComments) {
       setPage(page + 1);
     }
-  }, [comments.length, total, page]);
+  }, [hasNextComments, page]);
 
   const addComment = useCallback((comment: GetMemeCommentsResponse['results'][0]) => {
     setComments((prev) => [...prev, comment]);
@@ -58,10 +74,11 @@ export const useMemeComments = (memeId: string | null): UseMemeCommentsResponse 
 
   return {
     comments,
+    commentsCount: total,
     isLoading,
     error,
     fetchNextComments: fetchNextPage,
-    hasNextComments: comments.length < total,
+    hasNextComments,
     addComment,
   };
 };
