@@ -90,7 +90,7 @@ export const MemeFeedItem = ({ meme, connectedUser, author }: MemeFeedItemProps)
           </Text>
         </Box>
       </Box>
-      <LinkBox as={Box} py={2} borderBottom="1px solid black">
+      <LinkBox as={Box} py={2} borderBottom="1px solid black" position="sticky" top={0} zIndex={1} bg="white">
         <Flex justifyContent="space-between" alignItems="center">
           <Flex alignItems="center">
             <LinkOverlay
