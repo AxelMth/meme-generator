@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { Box, Flex, StackDivider, VStack } from '@chakra-ui/react';
+import { Box, Flex, VStack } from '@chakra-ui/react';
 import { useMemo } from 'react';
 
 import { Loader } from '../../components/loader';
@@ -40,8 +40,15 @@ export const MemeFeedPage: React.FC = () => {
   }
 
   return (
-    <Flex width="full" height="full" justifyContent="center" overflowY="auto" onScroll={handleScroll}>
-      <VStack p={4} width="full" maxWidth={800} divider={<StackDivider border="gray.200" />}>
+    <Flex
+      width="full"
+      height="full"
+      justifyContent="center"
+      overflowY="auto"
+      onScroll={handleScroll}
+      backgroundColor="gray.100"
+    >
+      <VStack p={4} width="full" maxWidth={800} gap={8}>
         {memes?.map((meme) => (
           <MemeFeedItem key={meme.id} meme={meme} connectedUser={user} author={usersByAuthorId?.[meme.authorId]} />
         ))}
