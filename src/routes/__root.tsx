@@ -17,7 +17,7 @@ const AuthenticationRouteComponent: React.FC = () => {
       <Flex bgColor="cyan.600" p={2} justifyContent="space-between" boxShadow="md">
         {/* Title */}
         <Heading size="lg" color="white">
-          MemeFactory
+          Meme Generator
         </Heading>
         {state.isAuthenticated && (
           <HStack alignItems="center" divider={<StackDivider border="white" />}>

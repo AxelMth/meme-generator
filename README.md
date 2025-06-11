@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Let us introduce you to **MemeFactory**, an application that allows you to create **[memes](https://en.wikipedia.org/wiki/Internet_meme)** and share them with the rest of the community.
+Let us introduce you to **Meme Generator**, an application that allows you to create **[memes](https://en.wikipedia.org/wiki/Internet_meme)** and share them with the rest of the community.
 
 ### Tech stack
 
