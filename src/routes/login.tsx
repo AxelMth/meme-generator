@@ -30,7 +30,7 @@ export const LoginPage: React.FC = () => {
       authenticate(jwt);
     },
   });
-  const { register, handleSubmit } = useForm<Inputs>();
+  const { register, handleSubmit, formState } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     mutate(data);
   };
@@ -41,7 +41,7 @@ export const LoginPage: React.FC = () => {
 
   return (
     <Flex height="full" width="full" alignItems="center" justifyContent="center">
-      <Flex direction="column" bgGradient="linear(to-br, cyan.100, cyan.200)" p={8} borderRadius={16}>
+      <Flex direction="column" bgGradient="linear(to-br, gray.100, gray.200)" p={8} borderRadius={16}>
         <Heading as="h2" size="md" textAlign="center" mb={4}>
           Login
         </Heading>
@@ -51,16 +51,25 @@ export const LoginPage: React.FC = () => {
           Please enter your credentials.
         </Text>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <FormControl>
+          <FormControl isInvalid={!!formState.errors.username || error !== null}>
             <FormLabel>Username</FormLabel>
             <Input type="text" placeholder="Enter your username" bg="white" size="sm" {...register('username')} />
           </FormControl>
-          <FormControl isInvalid={error !== null}>
+          <FormControl isInvalid={!!formState.errors.password || error !== null} mt={2}>
             <FormLabel>Password</FormLabel>
             <Input type="password" placeholder="Enter your password" bg="white" size="sm" {...register('password')} />
             {error !== null && renderError(error)}
           </FormControl>
-          <Button color="white" colorScheme="cyan" mt={4} size="sm" type="submit" width="full" isLoading={isPending}>
+          <Button
+            color="white"
+            backgroundColor="black"
+            _hover={{ backgroundColor: 'gray.700' }}
+            mt={4}
+            size="sm"
+            type="submit"
+            width="full"
+            isLoading={isPending}
+          >
             Login
           </Button>
         </form>

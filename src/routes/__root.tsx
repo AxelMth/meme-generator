@@ -14,7 +14,7 @@ const AuthenticationRouteComponent: React.FC = () => {
   return (
     <Flex width="full" height="full" direction="column">
       {/* Header */}
-      <Flex bgColor="cyan.600" p={2} justifyContent="space-between" boxShadow="md">
+      <Flex bgColor="black" p={2} justifyContent="space-between" boxShadow="md">
         {/* Title */}
         <Heading size="lg" color="white">
           Meme Generator
