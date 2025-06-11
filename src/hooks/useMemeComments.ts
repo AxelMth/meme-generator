@@ -19,18 +19,9 @@ export const useMemeComments = (memeId: string | null): UseMemeCommentsResponse 
   const token = useAuthToken();
   const queryClient = useQueryClient();
 
-  const initialPage = 1;
-  const initialTotal = 0;
-
   const [comments, setComments] = useState<GetMemeCommentsResponse['results']>([]);
-  const [page, setPage] = useState(initialPage);
-  const [total, setTotal] = useState(initialTotal);
-
-  useEffect(() => {
-    setComments([]);
-    setPage(initialPage);
-    setTotal(initialTotal);
-  }, [memeId]);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
 
   const { isLoading, error } = useQuery({
     queryKey: ['memeComments', memeId, page],

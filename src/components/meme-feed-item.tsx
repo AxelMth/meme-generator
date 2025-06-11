@@ -1,7 +1,7 @@
 import { Avatar, Box, Collapse, Flex, Icon, LinkBox, LinkOverlay, Text, Input, VStack, Button } from '@chakra-ui/react';
 import { CaretDown, CaretUp, Chat } from '@phosphor-icons/react';
 import { format } from 'timeago.js';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { Loader } from './loader';
 import { Comment } from './comment';
@@ -17,19 +17,12 @@ export const MemeFeedItem = ({ meme, connectedUser, author }: MemeFeedItemProps)
   const [openedCommentSection, setOpenedCommentSection] = useState<string | null>(null);
   const {
     comments,
-    commentsCount: commentsCountFromApi,
+    commentsCount,
     isLoading: isLoadingComments,
     fetchNextComments,
     hasNextComments,
     addComment,
   } = useMemeComments(openedCommentSection);
-
-  const commentCount = useMemo(() => {
-    if (commentsCountFromApi > +meme.commentsCount) {
-      return commentsCountFromApi;
-    }
-    return +meme.commentsCount;
-  }, [commentsCountFromApi, meme.commentsCount]);
 
   const authorIds = useMemo(() => {
     return [...new Set(comments.map((comment) => comment.authorId))];
@@ -105,7 +98,7 @@ export const MemeFeedItem = ({ meme, connectedUser, author }: MemeFeedItemProps)
               cursor="pointer"
               onClick={() => setOpenedCommentSection(openedCommentSection === meme.id ? null : meme.id)}
             >
-              <Text data-testid={`meme-comments-count-${meme.id}`}>{commentCount} comments</Text>
+              <Text data-testid={`meme-comments-count-${meme.id}`}>{commentsCount || meme.commentsCount} comments</Text>
             </LinkOverlay>
             <Icon as={openedCommentSection !== meme.id ? CaretDown : CaretUp} ml={2} mt={1} />
           </Flex>
