@@ -6,16 +6,12 @@ import { Avatar } from '@chakra-ui/react';
 import { GetUserByIdResponse } from '../api';
 import { Comment as CommentType } from '../types/comment';
 
-type CommentProps = {
-  comment: CommentType;
-  author: GetUserByIdResponse | undefined;
-  memeId: string;
-};
+type CommentProps = { comment: CommentType; author: GetUserByIdResponse | undefined; memeId: string };
 export const Comment = ({ comment, author, memeId }: CommentProps) => {
   const authorName = author?.username || 'Unknown';
   const authorPictureUrl = author?.pictureUrl || '';
   return (
-    <>
+    <Flex>
       <Avatar borderWidth="1px" borderColor="gray.300" size="sm" name={authorName} src={authorPictureUrl} mr={2} />
       <Box p={2} borderRadius={8} bg="gray.50" border="1px solid" borderColor="gray.100" flexGrow={1}>
         <Flex justifyContent="space-between" alignItems="center">
@@ -37,6 +33,6 @@ export const Comment = ({ comment, author, memeId }: CommentProps) => {
           {comment.content}
         </Text>
       </Box>
-    </>
+    </Flex>
   );
 };
