@@ -15,7 +15,7 @@ export const Comment = ({ comment, author, memeId }: CommentProps) => {
   const authorName = author?.username || 'Unknown';
   const authorPictureUrl = author?.pictureUrl || '';
   return (
-    <Flex key={comment.id}>
+    <>
       <Avatar borderWidth="1px" borderColor="gray.300" size="sm" name={authorName} src={authorPictureUrl} mr={2} />
       <Box p={2} borderRadius={8} bg="gray.50" border="1px solid" borderColor="gray.100" flexGrow={1}>
         <Flex justifyContent="space-between" alignItems="center">
@@ -37,6 +37,6 @@ export const Comment = ({ comment, author, memeId }: CommentProps) => {
           {comment.content}
         </Text>
       </Box>
-    </Flex>
+    </>
   );
 };

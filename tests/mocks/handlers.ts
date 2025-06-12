@@ -110,7 +110,7 @@ export const handlers = [
       id: 'dummy_comment_id_4',
       memeId: params.id,
       authorId: Object.values(users)[0].id,
-      content: body,
+      content: (body as { content: string })?.content || 'undefined',
       createdAt: new Date().toISOString(),
     });
   }),

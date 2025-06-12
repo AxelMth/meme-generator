@@ -108,11 +108,17 @@ export const MemeFeedItem = ({ meme, connectedUser, author }: MemeFeedItemProps)
         </Text>
       </Flex>
 
-      <Text fontWeight="bold" fontSize="medium" mb={2}>
-        <Text color="gray.500" whiteSpace="pre-line" data-testid={`meme-description-${meme.id}`}>
-          {meme.description}
-        </Text>
+      <Text
+        color="gray.500"
+        whiteSpace="pre-line"
+        data-testid={`meme-description-${meme.id}`}
+        fontWeight="bold"
+        fontSize="medium"
+        mb={2}
+      >
+        {meme.description}
       </Text>
+
       <MemePicture pictureUrl={meme.pictureUrl} texts={meme.texts} dataTestId={`meme-picture-${meme.id}`} />
 
       <LinkBox as={Box} py={2} position="sticky" top={0} zIndex={1} bg="white">
@@ -121,7 +127,7 @@ export const MemeFeedItem = ({ meme, connectedUser, author }: MemeFeedItemProps)
             <LinkOverlay data-testid={`meme-comments-section-${meme.id}`} cursor="pointer">
               <Text data-testid={`meme-comments-count-${meme.id}`}>
                 <Icon as={Chat} mr={2} />
-                {commentsCountValue} comment{commentsCountValue > 1 ? 's' : ''}
+                {commentsCountValue} {commentsCountValue > 1 ? 'comments' : 'comment'}
               </Text>
             </LinkOverlay>
             <Link
@@ -132,6 +138,7 @@ export const MemeFeedItem = ({ meme, connectedUser, author }: MemeFeedItemProps)
               fontSize="sm"
               position="absolute"
               right={0}
+              data-testid={`meme-comments-toggle-${meme.id}`}
             >
               {openedCommentSection === meme.id ? 'See less comments' : 'See more comments'}
             </Link>

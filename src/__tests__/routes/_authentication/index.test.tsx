@@ -72,7 +72,7 @@ describe('routes/_authentication/index', () => {
       });
 
       act(() => {
-        fireEvent.click(screen.getByTestId(`meme-comments-section-${memeId}`));
+        fireEvent.click(screen.getByTestId(`meme-comments-toggle-${memeId}`));
       });
 
       await waitFor(() => {
@@ -91,7 +91,7 @@ describe('routes/_authentication/index', () => {
       renderMemeFeedPage();
 
       const memeId = 'dummy_meme_id_1';
-      const commentId = 'dummy_comment_id_1';
+      const commentId = 'dummy_comment_id_4';
 
       const commentInput = await screen.findByTestId(`meme-comment-input-meme_id_${memeId}`);
 
