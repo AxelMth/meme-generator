@@ -21,7 +21,8 @@ export const useMemes = (): UseMemesResponse => {
       const { results, total, pageSize } = await getMemes(token, pageParam);
       return { results: results, total, pageSize };
     },
-    getNextPageParam: (_lastPage, _pages, previousPageParam) => previousPageParam + 1,
+    getNextPageParam: (lastPage, _allPages, lastPageParam) =>
+      lastPage.results.length === 0 ? undefined : lastPageParam + 1,
     initialPageParam: 1,
   });
 
