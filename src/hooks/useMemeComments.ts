@@ -5,6 +5,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useAuthToken } from '../contexts/useAuthentication';
 import { GetMemeCommentsResponse, getMemeComments as getMemeCommentsApi } from '../api';
 import { Comment } from '../types/comment';
+import { useLogoutOnUnauthorized } from './useLogoutOnUnauthorized';
 
 export const useMemeComments = (memeId: string | null): UseMemeCommentsResponse => {
   const token = useAuthToken();
@@ -26,6 +27,8 @@ export const useMemeComments = (memeId: string | null): UseMemeCommentsResponse 
     },
     enabled: !!memeId,
   });
+
+  useLogoutOnUnauthorized(error);
 
   useEffect(() => {
     if (isLoading || !memeId) return;

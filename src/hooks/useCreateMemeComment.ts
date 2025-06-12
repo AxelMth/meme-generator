@@ -3,10 +3,9 @@ import { useMutation } from '@tanstack/react-query';
 import { useAuthToken } from '../contexts/useAuthentication';
 import { createMemeComment } from '../api';
 import { Comment } from '../types/comment';
+import { useLogoutOnUnauthorized } from './useLogoutOnUnauthorized';
 
-type UseCreateMemeCommentProps = {
-  memeId: string;
-};
+type UseCreateMemeCommentProps = { memeId: string };
 
 type UseCreateMemeCommentResponse = {
   createComment: (data: { content: string }) => void;
@@ -15,14 +14,12 @@ type UseCreateMemeCommentResponse = {
 
 export const useCreateMemeComment = ({ memeId }: UseCreateMemeCommentProps): UseCreateMemeCommentResponse => {
   const token = useAuthToken();
-  const { mutate, data } = useMutation({
+  const { mutate, data, error } = useMutation({
     mutationFn: async ({ content }: { content: string }) => {
       return createMemeComment(token, memeId, content);
     },
   });
+  useLogoutOnUnauthorized(error);
 
-  return {
-    createComment: mutate,
-    createdComment: data,
-  };
+  return { createComment: mutate, createdComment: data };
 };

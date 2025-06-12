@@ -14,8 +14,6 @@ export class NotFoundError extends Error {
 
 function checkStatus(response: Response) {
   if (response.status === 401) {
-    // The perfect way to handle this kind of side effect is to have an interceptor in the axios instance
-    localStorage.removeItem('token');
     throw new UnauthorizedError();
   }
   if (response.status === 404) {
@@ -24,9 +22,7 @@ function checkStatus(response: Response) {
   return response;
 }
 
-export type LoginResponse = {
-  jwt: string;
-};
+export type LoginResponse = { jwt: string };
 
 /**
  * Authenticate the user with the given credentials
@@ -37,18 +33,12 @@ export type LoginResponse = {
 export async function login(username: string, password: string): Promise<LoginResponse> {
   return await fetch(`${BASE_URL}/authentication/login`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password }),
   }).then((res) => checkStatus(res).json());
 }
 
-export type GetUserByIdResponse = {
-  id: string;
-  username: string;
-  pictureUrl: string;
-};
+export type GetUserByIdResponse = { id: string; username: string; pictureUrl: string };
 
 /**
  * Get a user by their id
@@ -58,10 +48,7 @@ export type GetUserByIdResponse = {
  */
 export async function getUserById(token: string, id: string): Promise<GetUserByIdResponse> {
   return await fetch(`${BASE_URL}/users/${id}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
   }).then((res) => checkStatus(res).json());
 }
 
@@ -73,21 +60,14 @@ export async function getUserById(token: string, id: string): Promise<GetUserByI
  */
 export async function getUsersByIds(token: string, ids: string[]): Promise<GetUserByIdResponse[]> {
   return await fetch(`${BASE_URL}/users?${ids.map((id) => `ids=${id}`).join('&')}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
   }).then((res) => checkStatus(res).json());
 }
 
 export type CreateMemePayload = {
   picture: File;
   description: string;
-  texts: {
-    content: string;
-    x: number;
-    y: number;
-  }[];
+  texts: { content: string; x: number; y: number }[];
 };
 
 export type CreateMemeResponse = {
@@ -115,9 +95,7 @@ export async function createMeme(token: string, meme: CreateMemePayload): Promis
   });
   return await fetch(`${BASE_URL}/memes`, {
     method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+    headers: { Authorization: `Bearer ${token}` },
     body: formData,
   }).then((res) => checkStatus(res).json());
 }
@@ -131,11 +109,7 @@ export type GetMemesResponse = {
     pictureUrl: string;
     description: string;
     commentsCount: string;
-    texts: {
-      content: string;
-      x: number;
-      y: number;
-    }[];
+    texts: { content: string; x: number; y: number }[];
     createdAt: string;
   }[];
 };
@@ -148,23 +122,14 @@ export type GetMemesResponse = {
  */
 export async function getMemes(token: string, page: number): Promise<GetMemesResponse> {
   return await fetch(`${BASE_URL}/memes?page=${page}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
   }).then((res) => checkStatus(res).json());
 }
 
 export type GetMemeCommentsResponse = {
   total: number;
   pageSize: number;
-  results: {
-    id: string;
-    authorId: string;
-    memeId: string;
-    content: string;
-    createdAt: string;
-  }[];
+  results: { id: string; authorId: string; memeId: string; content: string; createdAt: string }[];
 };
 
 /**
@@ -175,10 +140,7 @@ export type GetMemeCommentsResponse = {
  */
 export async function getMemeComments(token: string, memeId: string, page: number): Promise<GetMemeCommentsResponse> {
   return await fetch(`${BASE_URL}/memes/${memeId}/comments?page=${page}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
   }).then((res) => checkStatus(res).json());
 }
 
@@ -203,10 +165,7 @@ export async function createMemeComment(
 ): Promise<CreateCommentResponse> {
   return await fetch(`${BASE_URL}/memes/${memeId}/comments`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
     body: JSON.stringify({ content }),
   }).then((res) => checkStatus(res).json());
 }

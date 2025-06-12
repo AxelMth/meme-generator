@@ -3,6 +3,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { useAuthToken } from '../contexts/useAuthentication';
 import { getMemes, GetMemesResponse } from '../api';
 import { Meme } from '../types/meme';
+import { useLogoutOnUnauthorized } from './useLogoutOnUnauthorized';
 
 type UseMemesResponse = {
   memes: Meme[];
@@ -23,6 +24,9 @@ export const useMemes = (): UseMemesResponse => {
     getNextPageParam: (_lastPage, _pages, previousPageParam) => previousPageParam + 1,
     initialPageParam: 1,
   });
+
+  useLogoutOnUnauthorized(error);
+
   return {
     memes: data?.pages.flatMap((page) => page.results).map(mapMeme) ?? [],
     isLoading,
@@ -33,8 +37,5 @@ export const useMemes = (): UseMemesResponse => {
 };
 
 function mapMeme(meme: GetMemesResponse['results'][0]): Meme {
-  return {
-    ...meme,
-    commentsCount: +meme.commentsCount,
-  };
+  return { ...meme, commentsCount: +meme.commentsCount };
 }
