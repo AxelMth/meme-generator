@@ -107,6 +107,10 @@ Pushing on main will automatically deploy a new version of this app in vercel.
 - All API/service logic is now abstracted into reusable hooks (`src/hooks`)
 - Added `prettier` configuration + `pnpm format` script for formatting
 - Project deployed on **Vercel**, with automatic deploys on push to `main`
+- Implemented Chakra UI color system with custom theme
+- Enhanced comment UX with collapsible sections and persistent input state
+- Added infinite scroll pagination for meme feed with loading states
+- Integrated `husky` for pre-commit hooks (linting + formatting)
 
 ---
 
