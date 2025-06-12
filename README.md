@@ -1,5 +1,8 @@
 # Meme generator
 
+[![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://meme-generator.axelmathi.eu)
+[![CI](https://github.com/axelmathieulegall/frontend-technical-test/actions/workflows/ci.yml/badge.svg)](https://github.com/axelmathieulegall/frontend-technical-test/actions/workflows/ci.yml)
+
 ## Introduction
 
 Let us introduce you to **Meme Generator**, an application that allows you to create **[memes](https://en.wikipedia.org/wiki/Internet_meme)** and share them with the rest of the community.
@@ -33,7 +36,7 @@ Once the dependencies are installed, you can run the project with:
 pnpm dev
 ```
 
-You’ll be able to access the app at `http://localhost:5173/` using the following credentials:
+You'll be able to access the app at `http://localhost:5173/` using the following credentials:
 
 - Username: `MemeMaster`
 - Password: `password`
@@ -48,7 +51,7 @@ pnpm coverage
 
 ## Instructions
 
-> 📌 Note: This test mimics a production environment. You’re encouraged to write clean code and meaningful commits. Treat it as if it’s your own project — structure, rename, or refactor freely.
+> 📌 Note: This test mimics a production environment. You're encouraged to write clean code and meaningful commits. Treat it as if it's your own project — structure, rename, or refactor freely.
 
 ### ✅ Ex 1 - Review and optimize the meme feed code
 
