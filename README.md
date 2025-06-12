@@ -1,7 +1,7 @@
 # Meme generator
 
-[![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://meme-generator.axelmathi.eu)
-[![CI](https://github.com/axelmathieulegall/frontend-technical-test/actions/workflows/ci.yml/badge.svg)](https://github.com/axelmathieulegall/frontend-technical-test/actions/workflows/ci.yml)
+![Vercel Deploy](https://deploy-badge.vercel.app/vercel/reactions-demo?url=https://meme-generator.axelmathi.eu)
+![CI](https://github.com/github/docs/actions/workflows/main.yml/badge.svg?event=push)
 
 ## Introduction
 
