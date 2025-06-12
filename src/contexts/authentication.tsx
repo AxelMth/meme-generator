@@ -17,6 +17,7 @@ export type Authentication = {
   signout: () => void;
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const AuthenticationContext = createContext<Authentication | undefined>(undefined);
 
 export const AuthenticationProvider: React.FC<PropsWithChildren> = ({ children }) => {

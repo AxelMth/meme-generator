@@ -25,10 +25,11 @@ declare module '@tanstack/react-router' {
 
 const queryClient = new QueryClient();
 
-function InnerApp() {
+// eslint-disable-next-line react-refresh/only-export-components
+const InnerApp: React.FC = () => {
   const { state } = useAuthentication();
   return <RouterProvider router={router} context={{ authState: state }} />;
-}
+};
 
 const rootElement = document.getElementById('root')!;
 if (!rootElement.innerHTML) {
