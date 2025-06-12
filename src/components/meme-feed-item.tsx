@@ -47,6 +47,10 @@ export const MemeFeedItem = ({ meme, connectedUser, author }: MemeFeedItemProps)
     return comments.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
   }, [comments]);
 
+  const commentsCountValue = useMemo(() => {
+    return commentsCount || meme.commentsCount;
+  }, [commentsCount, meme.commentsCount]);
+
   const { users: authors } = useUsersByIds(authorIds);
 
   const authorById = useMemo(() => {
@@ -117,7 +121,7 @@ export const MemeFeedItem = ({ meme, connectedUser, author }: MemeFeedItemProps)
             <LinkOverlay data-testid={`meme-comments-section-${meme.id}`} cursor="pointer">
               <Text data-testid={`meme-comments-count-${meme.id}`}>
                 <Icon as={Chat} mr={2} />
-                {commentsCount || meme.commentsCount} comment{commentsCount || meme.commentsCount > 1 ? 's' : ''}
+                {commentsCountValue} comment{commentsCountValue > 1 ? 's' : ''}
               </Text>
             </LinkOverlay>
             <Link
@@ -129,7 +133,7 @@ export const MemeFeedItem = ({ meme, connectedUser, author }: MemeFeedItemProps)
               position="absolute"
               right={0}
             >
-              {openedCommentSection === meme.id ? 'Fermer les commentaires' : 'Voir les commentaires'}
+              {openedCommentSection === meme.id ? 'See less comments' : 'See more comments'}
             </Link>
           </Flex>
         </Flex>
