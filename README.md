@@ -1,7 +1,7 @@
 # Meme generator
 
 ![Vercel Deploy](https://deploy-badge.vercel.app/vercel/reactions-demo?url=https://meme-generator.axelmathi.eu)
-![CI](.github/workflows/main.yml/badge.svg?event=push)
+![CI](https://github.com/AxelMth/meme-generator/actions/workflows/ci.yml/badge.svg)
 
 ## Introduction
 
